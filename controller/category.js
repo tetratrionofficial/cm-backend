@@ -8,10 +8,12 @@ const createCategory = async (req, res) => {
         if (!name) {
           return res.status(400).json({ message: "Name is required" });
         }
+
         const existingCategory = await Category.findOne({ name });
         if (existingCategory) {
           return res.status(400).json({ message: "Category already exists" });
         }
+
         const category = await new Category({
           name,
         }).save();

@@ -23,9 +23,8 @@ const productSchema = new mongoose.Schema(
     salePrice: {
       type: Number,
     },
-    image: {
-      type: String,
-      required: true,
+    image:{
+      type:[String],
     },
     shortDescription: {
       type: String,
@@ -42,10 +41,10 @@ const productSchema = new mongoose.Schema(
     //   type: [String],
     // },
     
-    categories: [{
+    categories: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-    }],
+    },
  
     tags: {
       type: [String],
@@ -110,7 +109,7 @@ const productSchema = new mongoose.Schema(
         enum: ["standard", "reduced rate", "zero rate"],
       },
     },
-    attributes: [
+    attributes: 
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Attribute",
@@ -123,7 +122,7 @@ const productSchema = new mongoose.Schema(
         //   },
         // ],
       },
-    ],
+    
 
     linkedProducts: {
       upSells: [

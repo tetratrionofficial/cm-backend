@@ -6,6 +6,7 @@ const createSubCategory = async (req, res) => {
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
     }
+    
     const existingSubCategory = await SubCategory.findOne({ name });
     if (existingSubCategory) {
       return res.status(400).json({ message: "SubCategory already exists" });
