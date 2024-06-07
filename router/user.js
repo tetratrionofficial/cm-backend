@@ -9,14 +9,17 @@ const {
 } = require("../controller/user");
 
 const { auth } = require("../middleware/auth");
-const { createCategory, getCategoryById, updateCategoryById, deleteCategoryById, getAllCategories } = require("../controller/category");
+const { createCategory, getCategoryById, updateCategoryById, deleteCategoryById, getAllCategories, getCategories, getCategory, updateCategory, deleteCategory } = require("../controller/category");
 const { createAttribute, getAllAttributes, updateAttributeById, deleteAttributeById } = require("../controller/attribute");
-const { createSubCategory, getSubCategory, updateSubCategory, deleteSubCategory } = require("../controller/subcategory");
+const { createSubCategory, getSubCategory, updateSubCategory, deleteSubCategory, createSubcategory, getSubcategories, getSubcategory, updateSubcategory, deleteSubcategory } = require("../controller/subcategory");
 
 const { createProduct,getProduct, updateProduct , deleteProduct, getAllProducts } = require("../controller/product");
 const { createOrder, getAllOrders, getOrderById, updateOrder, deleteOrder } = require("../controller/order");
 const { createCustomer, customerlogin, allCustomers, deleteCustomer, updateCustomer ,  } = require("../controller/customer");
 const { createCoupon, getCoupon, getAllCoupons, updateCoupon, deleteCoupon } = require("../controller/coupon");
+const { createRefund, deleteRefund, getAllRefunds, getRefundById , updateRefund } = require("../controller/refund");
+const { addProductToStore, getProductsInStore, updateProductPriceInStore, deleteProductFromStore } = require("../controller/addToStrore");
+const { createVendor, vendorLogin, allVendors, updateVendor, deleteVendor } = require("../controller/vendor");
 
 //Create User 
 router.post("/create-user", createUser);
@@ -27,15 +30,16 @@ router.patch("/update-user/:id", updateUser);
 
 
 router.post("/create-category", createCategory);
-router.get("/category", getAllCategories);
-router.get("/category/:id", getCategoryById)
-router.put("/update-category/:id", updateCategoryById);
-router.delete("/delete-category/:id", deleteCategoryById);
+router.get("/category", getCategories);
+router.get("/category/:id", getCategory)
+router.put("/update-category/:id", updateCategory);
+router.delete("/delete-category/:id", deleteCategory);
 
-router.post("/create-subcategory", createSubCategory);
-router.get("/subcategory", getSubCategory);
-router.put("/update-subcategory/:id", updateSubCategory);
-router.delete("/delete-subcategory/:id", deleteSubCategory);
+router.post("/create-subcategory", createSubcategory);
+router.get("/subcategory", getSubcategories);
+router.put("/subcategory/:id", getSubcategory);
+router.put("/update-subcategory/:id", updateSubcategory);
+router.delete("/delete-subcategory/:id", deleteSubcategory);
 
 router.post("/create-attribute", createAttribute);
 router.get("/attribute", getAllAttributes);
@@ -66,4 +70,25 @@ router.get("/coupons", getAllCoupons);
 router.put("/coupon/:id", updateCoupon);
 router.delete("/coupon/:id", deleteCoupon);
 
+
+router.post('/refunds', createRefund);
+router.get('/refunds', getAllRefunds);
+router.get('/refunds/:id', getRefundById);
+router.put('/refunds/:id', updateRefund);
+router.delete('/refunds/:id',deleteRefund);
+
+router.post('/addToStore', addProductToStore);
+router.get('/addToStore', getProductsInStore);
+router.put('/addToStore/:id', updateProductPriceInStore);
+router.delete('/addToStore/:id', deleteProductFromStore);
+
+router.post("/vendors" , createVendor);
+router.post("/vendors",vendorLogin );
+router.get("/vendors", allVendors);
+router.delete("/delete-customer/:id", deleteVendor);
+router.patch("/update-customer/:id", updateVendor);
+
+
 module.exports = router;
+
+
