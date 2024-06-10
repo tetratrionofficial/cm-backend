@@ -88,6 +88,11 @@ router.get("/vendors", allVendors);
 router.delete("/delete-customer/:id", deleteVendor);
 router.patch("/update-customer/:id", updateVendor);
 
+router.post('/follow', followController.followVendor);
+router.post('/unfollow', followController.unfollowVendor);
+router.get('/vendors/:vendorId/followers', followController.getFollowers);
+
+
 
 module.exports = router;
 

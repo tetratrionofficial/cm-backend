@@ -5,7 +5,7 @@ exports.auth = async (req, res, next) => {
   if (!token) {
     res.status(403).json({
       status: 1,
-      message: "UnAuhorized",
+      message: "UnAuthorized",
     });
   }
   console.log(token,"-------",process.env.ACCESS_TOKEN_SECRET);

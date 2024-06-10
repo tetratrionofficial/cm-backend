@@ -21,6 +21,10 @@ const customerSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    followedVendors: [{ 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Vendor' 
+    }]
   },
   { timestamps: true }
 );

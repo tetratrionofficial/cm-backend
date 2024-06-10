@@ -36,6 +36,7 @@ const vendorSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Customer' }]
   },
   { timestamps: true }
 );
