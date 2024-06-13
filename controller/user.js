@@ -1,19 +1,16 @@
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { registerSchema } = require("../schema/UserSchema");
+const { ZodError } = require("zod");
 
 //createUser
 exports.createUser = async (req, res) => {
   const { username,firstname, lastname, email, phone, password } = req.body;
 
-  if (!name || !email || !phone || !password ) {
-    return res.json({
-      status: 1,
-      message: "All fields are required.",
-    });
-  }
-
   try {
+    console.log(req.body);
+    registerSchema.parse(req.body);
     const existUser = await User.findOne({ email });
     if (existUser) {
       return res.json({
@@ -43,6 +40,13 @@ exports.createUser = async (req, res) => {
       data: createdUser,
     });
   } catch (err) {
+    console.log(err)
+    if(err instanceof ZodError){
+      res.json({
+        status:1,
+        messsage:'Invalid entity'
+      })
+    }
     return res.json({
       status: 1,
       message: err.message,

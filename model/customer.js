@@ -17,14 +17,17 @@ const customerSchema = new mongoose.Schema(
     phone: {
       type: String,
     },
-    userRole:String,
+    userRole:{
+      type:String,
+      enum:['Customer'],
+    },
     password: {
       type: String,
     },
     followedVendors: [{ 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Vendor' 
-    }]
+    }] 
   },
   { timestamps: true }
 );

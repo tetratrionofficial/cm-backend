@@ -32,7 +32,10 @@ const vendorSchema = new mongoose.Schema(
     cin:{
         type:String,
     },
-    userRole:String,
+    userRole:{
+      type:String,
+      enum:['Vendor'],
+    },
     password: {
       type: String,
     },
