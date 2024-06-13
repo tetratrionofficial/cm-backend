@@ -102,14 +102,14 @@ exports.createCategory = async (req, res) => {
     const { name, parentId } = req.body;
     const newCategory = new Category({ name });
 
-    if (parentId) {
-      const parentCategory = await Category.findById(parentId);
-      if (!parentCategory) {
-        return res.status(404).json({ message: 'Parent category not found' });
-      }
-      parentCategory.subcategories.push(newCategory._id);
-      await parentCategory.save();
-    }
+    // if (parentId) {
+    //   const parentCategory = await Category.findById(parentId);
+    //   if (!parentCategory) {
+    //     return res.status(404).json({ message: 'Parent category not found' });
+    //   }
+    //   parentCategory.subcategories.push(newCategory._id);
+    //   await parentCategory.save();
+    // }
 
     await newCategory.save();
     res.status(201).json(newCategory);
@@ -121,7 +121,7 @@ exports.createCategory = async (req, res) => {
 // Get all categories
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await Category.find().populate('subcategories');
+    const categories = await Category.find();
     res.status(200).send(categories);
   } catch (err) {
     res.status(500).send(err);
@@ -131,7 +131,7 @@ exports.getCategories = async (req, res) => {
 // Get a single category by ID
 exports.getCategory = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id).populate('subcategories');
+    const category = await Category.findById(req.params.id);
     if (!category) {
       return res.status(404).send();
     }

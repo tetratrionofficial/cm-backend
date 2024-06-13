@@ -3,11 +3,13 @@ const app = express();
 const mongoose = require("mongoose");
 const router = require("./router/user");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 
 const port = process.env.PORT || 4002;
 //const connectDB = require("config.js");
 
 app.use(express.json());
+app.use(cors());
 app.use("/user", router);
 
 app.get("/", (req, res) => {
