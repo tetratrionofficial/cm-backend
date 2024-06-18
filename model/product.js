@@ -169,6 +169,10 @@ const productSchema = new mongoose.Schema(
       purchaseNote: {
         type: String,
       },
+      reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ProductReview",
+      }],
     },
   },
   { timestamps: true }

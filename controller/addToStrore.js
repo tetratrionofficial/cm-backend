@@ -5,10 +5,16 @@ const AddToStore = require("../model/addToStore");
 exports.addProductToStore = async (req, res) => {
   try {
     const { productId, price } = req.body;
+    console.log(req.user);
     const userId = req.user._id;
+    
 
     if (!productId || !price) {
       return res.status(400).json({ message: "Product ID and price are required" });
+    }
+    
+    if (typeof price !== 'number' || price <= 0) {
+      return res.status(400).json({ message: "Price must be a positive number" });
     }
 
     const product = await Product.findById(productId);

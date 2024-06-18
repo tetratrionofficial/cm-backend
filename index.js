@@ -4,6 +4,12 @@ const mongoose = require("mongoose");
 const router = require("./router/user");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
+const http = require('http');
+const socketIo = require('socket.io');
+
+const server = http.createServer(app);
+const io = socketIo(server);
+exports.module=io;
 
 const port = process.env.PORT || 4002;
 //const connectDB = require("config.js");
@@ -16,6 +22,16 @@ app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
 
+//Soket  connection
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
+// Database connection 
 const db = process.env.DB_URL.replace("<password>", process.env.DB_PASSWORD);
 mongoose.set("strictQuery", false);  
 mongoose

@@ -43,9 +43,9 @@ exports.createCoupon = async (req, res) => {
 // Get Coupon
 exports.getCoupon = async (req, res) => {
   try {
-    const couponId = req.params.couponId;
+    const couponId = req.params.id;
 
-    const coupon = await Coupon.findById(couponId);
+    const coupon = await Coupon.findById({_id:couponId});
 
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
@@ -61,9 +61,9 @@ exports.getCoupon = async (req, res) => {
 // Update Coupon
 exports.updateCoupon = async (req, res) => {
   try {
-    const couponId = req.params.couponId;
+    const couponId = req.params.id;
 
-    let coupon = await Coupon.findById(couponId);
+    let coupon = await Coupon.findById({_id:couponId});
 
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
@@ -82,9 +82,9 @@ exports.updateCoupon = async (req, res) => {
 // Delete Coupon
 exports.deleteCoupon = async (req, res) => {
   try {
-    const couponId = req.params.couponId;
+    const couponId = req.params.id;
 
-    const deletedCoupon = await Coupon.findByIdAndDelete(couponId);
+    const deletedCoupon = await Coupon.findByIdAndDelete({_id:couponId});
 
     if (!deletedCoupon) {
       return res.status(404).json({ message: "Coupon not found" });

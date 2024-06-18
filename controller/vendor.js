@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 // Create a new vendor
 exports.createVendor = async (req, res) => {
-  const { firstname, lastname, email, phone, aadhaar, gst, shopLicense, udhyamAadhaar, cin, userRole, password } = req.body;
+  const { firstname, lastname, email, phone, vendorType, aadhaar, gst, shopLicense, udhyamAadhaar, cin, userRole, password } = req.body;
 
   if (!firstname || !email || !password) {
     return res.json({
@@ -29,6 +29,7 @@ exports.createVendor = async (req, res) => {
       lastname,
       email,
       phone,
+      vendorType,
       aadhaar,
       gst,
       shopLicense,

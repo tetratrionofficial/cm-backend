@@ -84,7 +84,7 @@ exports.updateOrder = async (req, res) => {
   const updateData = req.body;
 
   try {
-    const order = await Order.findById(id);
+    const order = await Order.findById({_id:id});
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -122,7 +122,7 @@ exports.deleteOrder = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const order = await Order.findById(id);
+    const order = await Order.findById({_id:id});
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }

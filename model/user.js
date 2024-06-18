@@ -21,7 +21,10 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
     },
-    userRole:String,
+    userRole:{
+    type: String,
+    enum: ["SUPER_ADMIN" , "PRODUCT_MANAGER" ]
+    },
     password: {
       type: String,
     },

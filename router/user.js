@@ -20,6 +20,8 @@ const { createCoupon, getCoupon, getAllCoupons, updateCoupon, deleteCoupon } = r
 const { createRefund, deleteRefund, getAllRefunds, getRefundById , updateRefund } = require("../controller/refund");
 const { addProductToStore, getProductsInStore, updateProductPriceInStore, deleteProductFromStore } = require("../controller/addToStrore");
 const { createVendor, vendorLogin, allVendors, updateVendor, deleteVendor } = require("../controller/vendor");
+const { sendMessage, adminSendMessage, getMessages } = require("../controller/chat");
+const { followVendor, unfollowVendor, getFollowers } = require("../controller/follower");
 
 //Create User 
 router.post("/create-user", createUser);
@@ -83,15 +85,23 @@ router.put('/addToStore/:id', updateProductPriceInStore);
 router.delete('/addToStore/:id', deleteProductFromStore);
 
 router.post("/vendors" , createVendor);
-router.post("/vendors",vendorLogin );
+router.post("/vendor",vendorLogin );
 router.get("/vendors", allVendors);
-router.delete("/delete-customer/:id", deleteVendor);
-router.patch("/update-customer/:id", updateVendor);
+router.delete("/delete-vendor/:id", deleteVendor);
+router.patch("/update-vendor/:id", updateVendor);
 
-//router.post('/follow', followController.followVendor);
-//router.post('/unfollow', followController.unfollowVendor);
-//router.get('/vendors/:vendorId/followers', followController.getFollowers);
+router.post('/follow', followVendor);
+router.post('/unfollow', unfollowVendor);
+router.get('/vendors/:vendorId/followers', getFollowers);
 
+
+
+
+router.post('/send',sendMessage);
+// Get messages between customer and vendor
+router.get('/messages', getMessages );
+// Admin view and participate in chat
+router.post('/admin-send', adminSendMessage);
 
 
 module.exports = router;

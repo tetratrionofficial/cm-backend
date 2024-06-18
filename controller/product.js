@@ -92,10 +92,10 @@ exports.createProduct = async (req, res) => {
 
 exports.getProduct = async (req, res) => {
   try {
-    const productId = req.params.productId;
+    const productId = req.params.id;
 
     // Find the product by its ID
-    const product = await Product.findById(productId);
+    const product = await Product.findById({_id:productId});
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -113,7 +113,7 @@ exports.getProduct = async (req, res) => {
 // Update Product 
 exports.updateProduct = async (req, res) => {
   try {
-    const productId = req.params.productId;
+    const productId = req.params.id;
 
     // Find the product by its ID
     let product = await Product.findById(productId);

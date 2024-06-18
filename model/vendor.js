@@ -17,6 +17,15 @@ const vendorSchema = new mongoose.Schema(
     phone: {
       type: String,
     },
+    vendorType:{
+      type: String,
+      enum: [
+        "Sellar",
+        "Manufacturer",
+        "Distributor",
+        "Wholesellar",
+      ],
+    },
     aadhaar:{
       type: String,
     },
@@ -39,8 +48,16 @@ const vendorSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Customer' }]
+    followers: [{ 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Customer' 
+    }],
+    reviews: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "VendorReview",
+    }],
   },
+  
   { timestamps: true }
 );
 const Vendor = mongoose.model("Vendor", vendorSchema);
