@@ -13,8 +13,8 @@ const { createCategory, getCategoryById, updateCategoryById, deleteCategoryById,
 const { createAttribute, getAllAttributes, updateAttributeById, deleteAttributeById } = require("../controller/attribute");
 const { createSubCategory, getSubCategory, updateSubCategory, deleteSubCategory, createSubcategory, getSubcategories, getSubcategory, updateSubcategory, deleteSubcategory } = require("../controller/subcategory");
 
-const { createProduct,getProduct, updateProduct , deleteProduct, getAllProducts } = require("../controller/product");
-const { createOrder, getAllOrders, getOrderById, updateOrder, deleteOrder } = require("../controller/order");
+const { createProduct,getProduct, updateProduct , deleteProduct, getAllProducts, getOutOfStockProducts, getLowStockProducts } = require("../controller/product");
+const { createOrder, getAllOrders, getOrderById, updateOrder, deleteOrder, getTopSellingProducts, getSalesByDateRange, getSalesByProduct, getTotalSales } = require("../controller/order");
 const { createCustomer, customerlogin, allCustomers, deleteCustomer, updateCustomer ,  } = require("../controller/customer");
 const { createCoupon, getCoupon, getAllCoupons, updateCoupon, deleteCoupon } = require("../controller/coupon");
 const { createRefund, deleteRefund, getAllRefunds, getRefundById , updateRefund } = require("../controller/refund");
@@ -22,6 +22,8 @@ const { addProductToStore, getProductsInStore, updateProductPriceInStore, delete
 const { createVendor, vendorLogin, allVendors, updateVendor, deleteVendor } = require("../controller/vendor");
 const { sendMessage, adminSendMessage, getMessages } = require("../controller/chat");
 const { followVendor, unfollowVendor, getFollowers } = require("../controller/follower");
+const { createProductReview } = require("../controller/productReview");
+const { createVendorReview } = require("../controller/vendorReview");
 
 //Create User 
 router.post("/create-user", createUser);
@@ -53,12 +55,18 @@ router.post("/create-product",auth, createProduct);
  router.put("/update-product/:id", updateProduct);
  router.delete("/delete-product/:id", deleteProduct);
  router.get("/getallproduct", getAllProducts);
+ router.get('/products/low-stock', getLowStockProducts);
+router.get('/products/out-of-stock', getOutOfStockProducts);
 
  router.post("/create-order", createOrder);
  router.get("/orders", getAllOrders);
  router.get("/order/:id", getOrderById);
  router.put("/update-order/:id", updateOrder);
  router.delete("/delete-order/:id", deleteOrder);
+ router.get('/orders/top-selling-products', getTopSellingProducts);
+ router.get('/sales/total', getTotalSales);
+router.get('/sales/by-product/:productId', getSalesByProduct);
+router.get('/sales/by-date-range', getSalesByDateRange);
 
  router.post("/customer" , createCustomer);
  router.post("/customer-login",customerlogin );
@@ -94,8 +102,9 @@ router.post('/follow', followVendor);
 router.post('/unfollow', unfollowVendor);
 router.get('/vendors/:vendorId/followers', getFollowers);
 
+router.post('/product-review', createProductReview);
 
-
+router.post('/vendor-review', createVendorReview);
 
 router.post('/send',sendMessage);
 // Get messages between customer and vendor

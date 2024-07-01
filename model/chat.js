@@ -11,7 +11,7 @@ const messageSchema = new mongoose.Schema(
     senderModel: {
       type: String,
       required: true,
-      enum: ['Customer', 'Vendor', 'ADMIN']
+      enum: ['Customer', 'Vendor', 'SUPER_ADMIN']
     },
     receiver: {
       type: mongoose.Schema.Types.ObjectId,

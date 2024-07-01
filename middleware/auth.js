@@ -18,6 +18,6 @@ exports.auth = async (req, res, next) => {
     });
   }
   req.user = verifyToken;
-  console(req.user);
+  //console(req.user);
   next();
 };

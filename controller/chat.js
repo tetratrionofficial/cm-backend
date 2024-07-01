@@ -3,7 +3,7 @@ const Message = require('../model/chat');
 const Vendor = require('../model/vendor');
 const Customer = require('../model/customer');
 const User = require('../model/user');
-const { io } = require('../index');  // Import the io instance
+//const io = require('../index'); // Import the io instance
 
 exports.sendMessage = async (req, res) => {
   const { senderId, receiverId, message } = req.body;
@@ -24,7 +24,7 @@ exports.sendMessage = async (req, res) => {
   });
 
   await newMessage.save();
-
+  const io = req.app.get('io');
   io.emit('newMessage', newMessage);  // Emit the new message to all connected clients
 
   res.status(201).send(newMessage);

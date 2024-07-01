@@ -9,7 +9,8 @@ const socketIo = require('socket.io');
 
 const server = http.createServer(app);
 const io = socketIo(server);
-exports.module=io;
+// module.exports = io; 
+app.set('io', io); 
 
 const port = process.env.PORT || 4002;
 //const connectDB = require("config.js");

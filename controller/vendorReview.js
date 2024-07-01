@@ -3,7 +3,7 @@ const Vendor = require('../model/vendor');
 const Product = require('../model/product');
 const Customer = require('../model/customer');
 
-const createVendorReview = async (req, res) => {
+exports.createVendorReview = async (req, res) => {
   try {
     const { vendorId, productId, customerId, comment, rating } = req.body;
 

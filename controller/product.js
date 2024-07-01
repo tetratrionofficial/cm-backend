@@ -156,15 +156,45 @@ exports.deleteProduct = async (req, res) => {
 };
 
 //get all product 
+// exports.getAllProducts = async (req, res) => {
+//   try {
+//     // Find all products
+//     const products = await Product.find();
+
+//     // Send the products as response
+//     res.status(200).json({ 
+//       status:0,
+//       length: products.length,
+//       data: products 
+//     });
+//   } catch (error) {
+//     console.error("Error fetching products:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
 exports.getAllProducts = async (req, res) => {
   try {
-    // Find all products
-    const products = await Product.find();
+    // Get page and limit from query parameters, set default values if not provided
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // Calculate the number of documents to skip
+    const skip = (page - 1) * limit;
+
+    // Find all products with pagination
+    const products = await Product.find().skip(skip).limit(limit);
+
+    // Get the total number of products
+    const totalProducts = await Product.countDocuments();
 
     // Send the products as response
     res.status(200).json({ 
-      status:0,
-      length: products.length,
+      status: 0,
+      page: page,
+      limit: limit,
+      totalProducts: totalProducts,
+      totalPages: Math.ceil(totalProducts / limit),
       data: products 
     });
   } catch (error) {
@@ -173,3 +203,41 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
+
+// Get products with low stock
+exports.getLowStockProducts = async (req, res) => {
+  try {
+    const lowStockThreshold = req.query.threshold || 10; 
+
+    const lowStockProducts = await Product.find({
+      'inventory.stock': { $lt: lowStockThreshold },
+    });
+
+    res.status(200).json({ 
+      status: 0,
+      length: lowStockProducts.length,
+      data: lowStockProducts 
+    });
+  } catch (error) {
+    console.error("Error fetching low stock products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Get out of stock products
+exports.getOutOfStockProducts = async (req, res) => {
+  try {
+    const outOfStockProducts = await Product.find({
+      'inventory.stock': { $eq: 0 },
+    });
+
+    res.status(200).json({ 
+      status: 0,
+      length: outOfStockProducts.length,
+      data: outOfStockProducts 
+    });
+  } catch (error) {
+    console.error("Error fetching out of stock products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

@@ -135,4 +135,136 @@ exports.deleteOrder = async (req, res) => {
   }
 };
 
+const mongoose = require('mongoose');
+
+// Get top selling products
+exports.getTopSellingProducts = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10; // Set a default limit if not provided
+
+    const topSellingProducts = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: "$products.product",
+          totalSold: { $sum: "$products.quantity" },
+        },
+      },
+      { $sort: { totalSold: -1 } },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+    ]);
+
+    res.status(200).json({ 
+      status: 0,
+      length: topSellingProducts.length,
+      data: topSellingProducts 
+    });
+  } catch (error) {
+    console.error("Error fetching top selling products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+
+// Get total sales
+exports.getTotalSales = async (req, res) => {
+  try {
+    const totalSales = await Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$totalAmount" },
+          totalOrders: { $sum: 1 },
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: 0,
+      data: totalSales[0] || { totalRevenue: 0, totalOrders: 0 },
+    });
+  } catch (error) {
+    console.error("Error fetching total sales:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Get sales by product
+exports.getSalesByProduct = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    const salesByProduct = await Order.aggregate([
+      { $unwind: "$products" },
+      { $match: { "products.product": mongoose.Types.ObjectId(productId) } },
+      {
+        $group: {
+          _id: "$products.product",
+          totalRevenue: { $sum: { $multiply: ["$products.quantity", "$products.price"] } },
+          totalSold: { $sum: "$products.quantity" },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+    ]);
+
+    res.status(200).json({
+      status: 0,
+      data: salesByProduct[0] || { totalRevenue: 0, totalSold: 0 },
+    });
+  } catch (error) {
+    console.error("Error fetching sales by product:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Get sales within a specific date range
+exports.getSalesByDateRange = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    const salesByDateRange = await Order.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$totalAmount" },
+          totalOrders: { $sum: 1 },
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: 0,
+      data: salesByDateRange[0] || { totalRevenue: 0, totalOrders: 0 },
+    });
+  } catch (error) {
+    console.error("Error fetching sales by date range:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 

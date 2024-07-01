@@ -2,10 +2,11 @@ const ProductReview = require('../model/productReview');
 const Product = require('../model/product');
 const Customer = require('../model/customer');
 
-const createProductReview = async (req, res) => {
+exports.createProductReview = async (req, res) => {
   try {
+    
     const { productId, customerId, comment, rating, image } = req.body;
-
+    console.log(customerId , productId);
     const product = await Product.findById(productId);
     const customer = await Customer.findById(customerId);
 
@@ -14,8 +15,8 @@ const createProductReview = async (req, res) => {
     }
 
     const review = new ProductReview({
-      product: productId,
-      author: customerId,
+      product: productId._id,
+      author: customerId._id,
       comment,
       rating,
       image,

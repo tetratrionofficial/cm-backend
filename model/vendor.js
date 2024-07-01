@@ -20,10 +20,10 @@ const vendorSchema = new mongoose.Schema(
     vendorType:{
       type: String,
       enum: [
-        "Sellar",
+        "Seller",
         "Manufacturer",
         "Distributor",
-        "Wholesellar",
+        "Wholeseller",
       ],
     },
     aadhaar:{
@@ -56,6 +56,14 @@ const vendorSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "VendorReview",
     }],
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    plan: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Plan',
+    },
   },
   
   { timestamps: true }

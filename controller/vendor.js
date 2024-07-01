@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 // Create a new vendor
 exports.createVendor = async (req, res) => {
-  const { firstname, lastname, email, phone, vendorType, aadhaar, gst, shopLicense, udhyamAadhaar, cin, userRole, password } = req.body;
+  const { firstname, lastname, email, phone, vendorType, aadhaar, gst, shopLicense, udhyamAadhaar, cin, userRole, password,isPremium  } = req.body;
 
   if (!firstname || !email || !password) {
     return res.json({
@@ -37,6 +37,7 @@ exports.createVendor = async (req, res) => {
       cin,
       userRole,
       password: hashedPassword,
+      isPremium,
     });
 
     const createdVendor = await newVendor.save();
@@ -89,7 +90,8 @@ exports.vendorLogin = async (req, res) => {
 
     const jwtPayload = {
       email,
-      userRole: existVendor.userRole
+      userRole: existVendor.userRole,
+      isPremium: existVendor.isPremium,
     };
     const token = jwt.sign(jwtPayload, process.env.ACCESS_TOKEN_SECRET);
 
@@ -168,6 +170,23 @@ exports.allVendors = async (req, res) => {
       status: 0,
       length: vendors.length,
       vendors,
+    });
+  } catch (err) {
+    res.json({
+      status: 1,
+      message: err.message,
+    });
+  }
+};
+
+// View all premium vendors
+exports.allPremiumVendors = async (req, res) => {
+  try {
+    const premiumVendors = await Vendor.find({ isPremium: true });
+    res.json({
+      status: 0,
+      length: premiumVendors.length,
+      vendors: premiumVendors,
     });
   } catch (err) {
     res.json({
